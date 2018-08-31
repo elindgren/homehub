@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.ericl.lighter.MainActivity">
+
+    <TableLayout
+        android:id="@+id/tableLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:adjustViewBounds="true"
+                android:background="@drawable/fox1_tiny"
+                android:divider="@drawable/empty_tall_divider"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:scaleType="fitCenter"
+                android:showDividers="middle">
+
+
+                <ImageButton
+                    android:id="@+id/onAllButton"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_weight="0"
+                    android:background="@drawable/roundbutton"
+                    android:foreground="@drawable/roundrippler"
+                    android:scaleType="fitCenter"
+                    app:srcCompat="@drawable/onall" />
+
+                <ImageButton
+                    android:id="@+id/offAllButton"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_weight="0"
+                    android:background="@drawable/roundbutton"
+                    android:foreground="@drawable/roundrippler"
+                    android:scaleType="fitCenter"
+                    app:srcCompat="@drawable/offall" />
+
+            </LinearLayout>
+            <!--
+
+
+
+
+
+
+
+             -->
+
+        </TableRow>
+
+        <View style="@style/DividerHorizontal" />
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center">
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="130dp"
+                android:layout_weight="2"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:showDividers="middle">
+
+
+                <ImageButton
+                    android:id="@+id/hylla1Button"
+                    android:layout_width="160dp"
+                    android:layout_height="130dp"
+                    android:layout_weight="1"
+                    android:adjustViewBounds="false"
+                    android:background="@drawable/squarebutton"
+                    android:cropToPadding="false"
+                    android:foreground="@drawable/squarerippler"
+                    android:scaleType="fitCenter"
+                    app:srcCompat="@drawable/hylla1_off" />
+
+                <View style="@style/DividerVertical" />
+
+                <ImageButton
+                    android:id="@+id/hylla2Button"
+                    android:layout_width="160dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/squarebutton"
+                    android:foreground="@drawable/squarerippler"
+                    android:scaleType="fitCenter"
+                    app:srcCompat="@drawable/hylla2_off" />
+            </LinearLayout>
+        </TableRow>
+
+        <View style="@style/DividerHorizontal" />
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center">
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="130dp"
+                android:layout_weight="2"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:showDividers="middle">
+
+
+                <ImageButton
+                    android:id="@+id/tvButton"
+                    android:layout_width="160dp"
+                    android:layout_height="130dp"
+                    android:layout_weight="1"
+                    android:adjustViewBounds="false"
+                    android:background="@drawable/squarebutton"
+                    android:cropToPadding="false"
+                    android:foreground="@drawable/squarerippler"
+                    android:scaleType="fitCenter"
+                    app:srcCompat="@drawable/tv_off" />
+
+                <View style="@style/DividerVertical" />
+
+                <ImageButton
+                    android:id="@+id/vitrinButton"
+                    android:layout_width="160dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/squarebutton"
+                    android:foreground="@drawable/squarerippler"
+                    android:scaleType="fitCenter"
+                    app:srcCompat="@drawable/vitrin" />
+            </LinearLayout>
+        </TableRow>
+
+        <View style="@style/DividerHorizontal" />
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center">
+
+            <ImageView
+                android:id="@+id/cat"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:srcCompat="@drawable/cat" />
+        </TableRow>
+    </TableLayout>
+
+    <TextView
+        android:id="@+id/debugTextView"
+        android:layout_width="363dp"
+        android:layout_height="67dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="DEBUG"
+        app:layout_constraintBottom_toBottomOf="@+id/tableLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
+</android.support.constraint.ConstraintLayout>
