@@ -64,7 +64,6 @@ public class MainActivity extends AppCompatActivity {
         //Instantiate a RequestQueue
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         String url = "http://192.168.0.196/H";
-
         //Request a string response form the provided URL.
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
@@ -81,7 +80,6 @@ public class MainActivity extends AppCompatActivity {
         });
         // Add the request to the RequestQueue
         requestQueue.add(stringRequest);
-
     }
     private void setupCat(){
         //Cat handler

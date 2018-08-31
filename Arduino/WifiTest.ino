@@ -23,6 +23,8 @@ WiFiEspServer server(80);
 
 // the setup function runs once when you press reset or power the board
 void setup() {
+  // DEBUG initialize digital pin LED_BUILTIN as an output.
+  pinMode(LED_BUILTIN, OUTPUT);
   //Initialize serial for debugging
   Serial.begin(115200);
 
@@ -75,6 +77,7 @@ void loop() {
   if (client) { //If a client is found
     Serial.println("New Client");
     String currentLine = ""; //Make a string to hold incoming data from the client
+    Serial.println("Reading from URL: ");
     while (client.connected()) { //Loop while the client is connected
       if (client.available()) { //If there are bytes to read from the client
         char c = client.read(); //read the byte, then
@@ -108,10 +111,14 @@ void loop() {
 
         //Check to see if the client request was "Get /H" or "GET /L":
         if (currentLine.endsWith("GET /H")) {
-          digitalWrite(1, HIGH); //Get /H turns the LED on
+          Serial.println("Turning On LED!");
+          client.println("HTTP/1.1 200 OK");
+          digitalWrite(LED_BUILTIN, HIGH); //Get /H turns the LED on
           }
         if (currentLine.endsWith("GET /L")) {
-          digitalWrite(1, LOW); //Get /L turns the LED off //Change lControl to something else - in the example it is the pin that the led is connected to
+          Serial.println("Turning off LED!");
+          client.println("HTTP/1.1 200 OK");
+          digitalWrite(LED_BUILTIN, LOW); //Get /L turns the LED off //Change lControl to something else - in the example it is the pin that the led is connected to
         }
       }
     }
