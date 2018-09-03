@@ -71,19 +71,31 @@ void printWifiStatus() {
 }
 
 void loop() {
+  //Print system uptime to serial:
+  //Serial.print("Uptime: ");
+  //Serial.print(millis()/60000);
+  //Serial.println("Mins");
+  //Serial.println();
   //Using code from: https://www.youtube.com/watch?v=ZH7ufemP8e0
   WiFiEspClient client = server.available(); //Listen for incoming clients
 
   if (client) { //If a client is found
     Serial.println("New Client");
-    String currentLine = ""; //Make a string to hold incoming data from the client
+    String currentLine = ""; //Make a string to hold incoming data from the device
+    String command = ""; //The parsed command.
     Serial.println("Reading from URL: ");
     while (client.connected()) { //Loop while the client is connected
+      delay(10); 
       if (client.available()) { //If there are bytes to read from the client
         char c = client.read(); //read the byte, then
         Serial.write(c); //print it out on the serial monitor
         if (c == '\n') { //If it's a newline char
-
+          Serial.print(currentLine.indexOf("GET")+" ");
+          //Save the command from the first line: 
+          if(currentLine.indexOf("GET" > 0)){
+            Serial.println("Command found: " + currentLine);
+            command = currentLine;
+          }
           //If the current line is blank, you got two newline characters in a row.
           //that's the end of the client HTTP request, so send a response
 
@@ -93,10 +105,17 @@ void loop() {
             client.println("HTTP/1.1 200 OK");
             client.println("Content-type:text/html");
             client.println();
-            client.print("Value at A0 is ");
-            client.print(analogRead(A0));
-            client.print("<br>");
-            //THe HTTP response ends with a other blank line:
+            //Check to see if the client request was "Get /H" or "GET /L":
+            if (command == "GET /H") {
+              command =
+              Serial.println(" Turning On LED!");
+              digitalWrite(LED_BUILTIN, HIGH); //Get /H turns the LED on
+              }
+            if (command == "GET /L") {
+              Serial.println("Turning off LED!");
+              digitalWrite(LED_BUILTIN, LOW); //Get /L turns the LED off //Change lControl to something else - in the example it is the pin that the led is connected to
+           }
+           //The HTTP response ends with a other blank line:
             client.println();
             //break out of the while loop:
             break;
@@ -107,19 +126,8 @@ void loop() {
         }
         else if (c != '\r') { //If you got anything but a carriage return character
           currentLine += c; //add it to the end of the currentLine
-        }
-
-        //Check to see if the client request was "Get /H" or "GET /L":
-        if (currentLine.endsWith("GET /H")) {
-          Serial.println("Turning On LED!");
-          client.println("HTTP/1.1 200 OK");
-          digitalWrite(LED_BUILTIN, HIGH); //Get /H turns the LED on
-          }
-        if (currentLine.endsWith("GET /L")) {
-          Serial.println("Turning off LED!");
-          client.println("HTTP/1.1 200 OK");
-          digitalWrite(LED_BUILTIN, LOW); //Get /L turns the LED off //Change lControl to something else - in the example it is the pin that the led is connected to
-        }
+        } 
+       
       }
     }
   }

@@ -34,12 +34,13 @@ public class MainActivity extends AppCompatActivity {
     private ImageButton vitrinButton;
     private ImageView cat;
 
-    private Toast toastAll; //General toast to show information for when onAll or offAll are pressed
+    private Toast toast; //General toast to show information for when onAll or offAll are pressed
 
     private boolean tvButtonOn = false; //initialized to off TODO - Check status from arduino!
     private boolean hylla1ButtonOn = false;
     private boolean hylla2ButtonOn = false;
     private boolean vitrinButtonOn = false;
+    private RequestQueue requestQueue;
 
 
     @Override
@@ -49,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
 //        arduinoCommunicator = new ArduinoCommunicator(this.getApplicationContext());
 
 
-        setupArduinoCommunicator();
+        requestQueue = setupArduinoCommunicator();
         setupCat();
         //Declare on-screen buttons and setup their click-events.
         setupOnAllButton();
@@ -59,23 +60,36 @@ public class MainActivity extends AppCompatActivity {
         setupHylla2Button();
         setupVitrinButtion();
     }
-    private void setupArduinoCommunicator(){
-        final TextView mTextView = (TextView)findViewById(R.id.debugTextView);
+    private RequestQueue setupArduinoCommunicator(){
+
         //Instantiate a RequestQueue
-        RequestQueue requestQueue = Volley.newRequestQueue(this);
-        String url = "http://192.168.0.196/H";
+        requestQueue = Volley.newRequestQueue(this);
+        return requestQueue;
+    }
+    private void sendRequestArduino(String url, final CharSequence toastText){
+        final TextView mTextView = (TextView)findViewById(R.id.debugTextView);
+
         //Request a string response form the provided URL.
+
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
                         //Display the first 500 characters of the response string.
                         mTextView.setText("Response is: " + response.substring(0, 500));
+                        Context context = getApplicationContext();
+                        int duration = Toast.LENGTH_LONG;
+                        toast = Toast.makeText(context, "Response is: " + response.substring(0, 500), duration);
+                        toast.show();
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                mTextView.setText("That didint work!");
+                mTextView.setText("That didint work! ");
+                Context context = getApplicationContext();
+                int duration = Toast.LENGTH_LONG;
+                toast = Toast.makeText(context, "That didn't work", duration);
+                toast.show();
             }
         });
         // Add the request to the RequestQueue
@@ -117,12 +131,12 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 //Generating a simple toast, to make sure it works
-                Context context = getApplicationContext();
-                CharSequence text = "Everything turned on!";
-                int duration = Toast.LENGTH_SHORT;
 
-                toastAll = Toast.makeText(context, text, duration);
-                toastAll.show();
+
+                // Create the arduino request:
+                String url = "http://192.168.0.196/H";
+                CharSequence toastTextOnAll = "Everything turned on!";
+                sendRequestArduino(url, toastTextOnAll);
             }
         });
 
@@ -137,8 +151,8 @@ public class MainActivity extends AppCompatActivity {
                 CharSequence text = "Everything turned off!";
                 int duration = Toast.LENGTH_SHORT;
 
-                toastAll = Toast.makeText(context, text, duration);
-                toastAll.show();
+                toast = Toast.makeText(context, text, duration);
+                toast.show();
             }
         });
     }
