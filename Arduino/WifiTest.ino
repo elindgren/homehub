@@ -76,6 +76,8 @@ void loop() {
   //Serial.print(millis()/60000);
   //Serial.println("Mins");
   //Serial.println();
+//  String test = "GET /H";
+//  Serial.println(test.indexOf("GET"));
   //Using code from: https://www.youtube.com/watch?v=ZH7ufemP8e0
   WiFiEspClient client = server.available(); //Listen for incoming clients
 
@@ -90,11 +92,12 @@ void loop() {
         char c = client.read(); //read the byte, then
         Serial.write(c); //print it out on the serial monitor
         if (c == '\n') { //If it's a newline char
-          Serial.print(currentLine.indexOf("GET")+" ");
+          Serial.println("Newline character found!");
           //Save the command from the first line: 
-          if(currentLine.indexOf("GET" > 0)){
-            Serial.println("Command found: " + currentLine);
+          if(currentLine.indexOf("GET") > -1){
+            currentLine.remove(7,8);  // Remove the HTTP/1.1 part of the request
             command = currentLine;
+            Serial.println("Command found: " + command);
           }
           //If the current line is blank, you got two newline characters in a row.
           //that's the end of the client HTTP request, so send a response
@@ -107,7 +110,6 @@ void loop() {
             client.println();
             //Check to see if the client request was "Get /H" or "GET /L":
             if (command == "GET /H") {
-              command =
               Serial.println(" Turning On LED!");
               digitalWrite(LED_BUILTIN, HIGH); //Get /H turns the LED on
               }
@@ -121,7 +123,9 @@ void loop() {
             break;
           }
           else { //If you got a newline, then clear currentline:
+            Serial.println("Reseting currentLine");
             currentLine = "";
+            Serial.println("Command: " + command);
           }
         }
         else if (c != '\r') { //If you got anything but a carriage return character
