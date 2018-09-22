@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Point;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Display;
 import android.view.View;
 import android.widget.Button;
@@ -76,16 +77,22 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(String response) {
                         //Display the first 500 characters of the response string.
-                        mTextView.setText("Response is: " + response.substring(0, 500));
+                        Log.d("ARDUINO_RESPONSE","Message: " + response);
+                        String tmp = response.split("<html>")[1];
+                        tmp = tmp.trim(); //Remove newline
+                        String response_LED = tmp.split("<br />")[0];  //Fetch information about LED
+                        Log.d("ARDUINO_RESPONSE", response_LED);
+                        mTextView.setText(response_LED);
                         Context context = getApplicationContext();
                         int duration = Toast.LENGTH_LONG;
-                        toast = Toast.makeText(context, "Response is: " + response.substring(0, 500), duration);
+                        toast = Toast.makeText(context, response_LED, duration);
                         toast.show();
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 mTextView.setText("That didint work! ");
+                Log.d("ARDUINO_RESPONSE","Error message: " + error.getMessage() + ", Cause: " + error.getCause());
                 Context context = getApplicationContext();
                 int duration = Toast.LENGTH_LONG;
                 toast = Toast.makeText(context, "That didn't work", duration);
