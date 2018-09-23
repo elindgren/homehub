@@ -20,48 +20,54 @@
             android:layout_height="wrap_content"
             android:gravity="center">
 
-            <LinearLayout
-                android:layout_width="match_parent"
+            <RelativeLayout
+                android:layout_width="0dip"
                 android:layout_height="match_parent"
-                android:adjustViewBounds="true"
-                android:background="@drawable/fox1_tiny"
-                android:divider="@drawable/empty_tall_divider"
-                android:gravity="center"
-                android:orientation="horizontal"
-                android:scaleType="fitCenter"
-                android:showDividers="middle">
+                android:layout_margin="0dp"
+                android:layout_weight="0" >
 
+                <ImageView
+                    android:id="@+id/imageview_find_days_in_between"
+                    android:layout_width="match_parent"
+                    android:layout_height="167dp"
+                    android:layout_centerInParent="true"
+                    android:adjustViewBounds="false"
+                    android:src="@drawable/fox1_tiny" />
 
-                <ImageButton
-                    android:id="@+id/onAllButton"
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
-                    android:layout_weight="0"
-                    android:background="@drawable/roundbutton"
-                    android:foreground="@drawable/roundrippler"
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="182dp"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:adjustViewBounds="true"
+                    android:divider="@drawable/empty_tall_divider"
+                    android:gravity="center"
+                    android:orientation="horizontal"
                     android:scaleType="fitCenter"
-                    app:srcCompat="@drawable/onall" />
-
-                <ImageButton
-                    android:id="@+id/offAllButton"
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
-                    android:layout_weight="0"
-                    android:background="@drawable/roundbutton"
-                    android:foreground="@drawable/roundrippler"
-                    android:scaleType="fitCenter"
-                    app:srcCompat="@drawable/offall" />
-
-            </LinearLayout>
-            <!--
+                    android:showDividers="middle">
 
 
+                    <ImageButton
+                        android:id="@+id/onAllButton"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:layout_weight="0"
+                        android:background="@drawable/roundbutton"
+                        android:foreground="@drawable/roundrippler"
+                        android:scaleType="fitCenter"
+                        app:srcCompat="@drawable/onall" />
 
-
-
-
-
-             -->
+                    <ImageButton
+                        android:id="@+id/offAllButton"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:layout_weight="0"
+                        android:background="@drawable/roundbutton"
+                        android:foreground="@drawable/roundrippler"
+                        android:scaleType="fitCenter"
+                        app:srcCompat="@drawable/offall" />
+                </LinearLayout>
+            </RelativeLayout>
 
         </TableRow>
 

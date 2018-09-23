@@ -7,12 +7,10 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Display;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.ToggleButton;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -21,7 +19,6 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
-import java.nio.charset.Charset;
 import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity {
@@ -84,14 +81,14 @@ public class MainActivity extends AppCompatActivity {
                         Log.d("ARDUINO_RESPONSE", response_LED);
                         mTextView.setText(response_LED);
                         Context context = getApplicationContext();
-                        int duration = Toast.LENGTH_LONG;
-                        toast = Toast.makeText(context, response_LED, duration);
+                        int duration = Toast.LENGTH_SHORT;
+                        toast = Toast.makeText(context, toastText, duration);
                         toast.show();
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                mTextView.setText("That didint work! ");
+                mTextView.setText("That didint work!");
                 Log.d("ARDUINO_RESPONSE","Error message: " + error.getMessage() + ", Cause: " + error.getCause());
                 Context context = getApplicationContext();
                 int duration = Toast.LENGTH_LONG;
@@ -137,34 +134,27 @@ public class MainActivity extends AppCompatActivity {
         onAllButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Generating a simple toast, to make sure it works
-
-
                 // Create the arduino request:
-                String url = "http://192.168.0.196/H";
+                String url = "http://192.168.0.196/AH";
                 CharSequence toastTextOnAll = "Everything turned on!";
                 sendRequestArduino(url, toastTextOnAll);
             }
         });
 
+    }
+    private void setupOffAllButton(){
         //Turn everything off
         offAllButton = (ImageButton)findViewById(R.id.offAllButton);
 
         offAllButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Generating a simple toast, to make sure it works
-                Context context = getApplicationContext();
-                CharSequence text = "Everything turned off!";
-                int duration = Toast.LENGTH_SHORT;
-
-                toast = Toast.makeText(context, text, duration);
-                toast.show();
+                // Create the arduino request:
+                String url = "http://192.168.0.196/AL";
+                CharSequence toastTextOffAll = "Everything turned off!";
+                sendRequestArduino(url, toastTextOffAll);
             }
         });
-    }
-    private void setupOffAllButton(){
-
     }
     private void setupTVButton(){
         //Turn tv on or off
@@ -172,31 +162,25 @@ public class MainActivity extends AppCompatActivity {
         tvButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Generating a simple toast, to make sure it works
-                //Context context = getApplicationContext();
-                //CharSequence textOn = "tvButton On!";
-                //CharSequence textOff = "tvButton Off!";
-
-                //int duration = Toast.LENGTH_SHORT;
-
-                //Toast toastOn = Toast.makeText(context, textOn, duration);
-                //Toast toastOff = Toast.makeText(context, textOff, duration);
-
+                String url = "";
+                CharSequence toastText = "";
                 if(!tvButtonOn){ //If TV is off
                     //Change the button to on-sprite
                     tvButton.setImageResource(R.drawable.tv_on);
-
-                    //toastOn.show();
+                    // Create the arduino request:
+                    url = "http://192.168.0.196/TH";
+                    toastText = "TV turned on!";
                     tvButtonOn = true;
                 }
                 else{ //If TV is on
                     //Change the button to off-sprite
                     tvButton.setImageResource(R.drawable.tv_off);
-
-                    //toastOff.show();
+                    // Create the arduino request:
+                    url = "http://192.168.0.196/TL";
+                    toastText = "TV turned off!";
                     tvButtonOn = false;
-
                 }
+                sendRequestArduino(url, toastText);
             }
         });
 
@@ -207,30 +191,23 @@ public class MainActivity extends AppCompatActivity {
         hylla1Button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Generating a simple toast, to make sure it works
-                //Context context = getApplicationContext();
-                //CharSequence textOn = "hylla1Button On!";
-                //CharSequence textOff = "hylla1Button Off!";
-
-                //int duration = Toast.LENGTH_SHORT;
-
-                //Toast toastOn = Toast.makeText(context, textOn, duration);
-                //Toast toastOff = Toast.makeText(context, textOff, duration);
-
+                String url = "";
+                CharSequence toastText = "";
                 if(!hylla1ButtonOn){ //If TV is off
                     //Change the button to on-sprite
                     hylla1Button.setImageResource(R.drawable.hylla1_on);
-
-                    //toastOn.show();
+                    url = "http://192.168.0.196/1H";
+                    toastText = "Hylla 1 turned on!";
                     hylla1ButtonOn = true;
                 }
                 else{ //If TV is on
                     //Change the button to off-sprite
                     hylla1Button.setImageResource(R.drawable.hylla1_off);
-
-                    //toastOff.show();
+                    url = "http://192.168.0.196/1L";
+                    toastText = "Hylla 1 turned off!";
                     hylla1ButtonOn = false;
                 }
+                sendRequestArduino(url, toastText);
             }
         });
     }
@@ -240,30 +217,23 @@ public class MainActivity extends AppCompatActivity {
         hylla2Button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Generating a simple toast, to make sure it works
-                //Context context = getApplicationContext();
-                //CharSequence textOn = "hylla2Button On!";
-                //CharSequence textOff = "hylla2Button Off!";
-
-                //int duration = Toast.LENGTH_SHORT;
-
-                //Toast toastOn = Toast.makeText(context, textOn, duration);
-                //Toast toastOff = Toast.makeText(context, textOff, duration);
-
+                String url = "";
+                CharSequence toastText = "";
                 if(!hylla2ButtonOn){ //If TV is off
                     //Change the button to on-sprite
                     hylla2Button.setImageResource(R.drawable.hylla2_on);
-
-                    //toastOn.show();
+                    url = "http://192.168.0.196/2H";
+                    toastText = "Hylla 2 turned on!";
                     hylla2ButtonOn = true;
                 }
                 else{ //If TV is on
                     //Change the button to off-sprite
                     hylla2Button.setImageResource(R.drawable.hylla2_off);
-
-                    //toastOff.show();
+                    url = "http://192.168.0.196/2L";
+                    toastText = "Hylla 2 turned off!";
                     hylla2ButtonOn = false;
                 }
+                sendRequestArduino(url, toastText);
             }
         });
 
@@ -274,30 +244,23 @@ public class MainActivity extends AppCompatActivity {
         vitrinButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Generating a simple toast, to make sure it works
-                //Context context = getApplicationContext();
-                //CharSequence textOn = "vitrinButton On!";
-                //CharSequence textOff = "vitrinButton Off!";
-
-                //int duration = Toast.LENGTH_SHORT;
-
-                //Toast toastOn = Toast.makeText(context, textOn, duration);
-                //Toast toastOff = Toast.makeText(context, textOff, duration);
-
+                String url = "";
+                CharSequence toastText = "";
                 if(!vitrinButtonOn){ //If TV is off
                     //Change the button to on-sprite
                     vitrinButton.setImageResource(R.drawable.vitrin_on);
-
-                    //toastOn.show();
+                    url = "http://192.168.0.196/VH";
+                    toastText = "Vitrin turned on!";
                     vitrinButtonOn = true;
                 }
                 else{ //If TV is on
                     //Change the button to off-sprite
                     vitrinButton.setImageResource(R.drawable.vitrin);
-
-                    //toastOff.show();
+                    url = "http://192.168.0.196/VL";
+                    toastText = "Vitrin turned off!";
                     vitrinButtonOn = false;
                 }
+                sendRequestArduino(url, toastText);
             }
         });
     }
