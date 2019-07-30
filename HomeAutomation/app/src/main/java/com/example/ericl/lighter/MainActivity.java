@@ -2,6 +2,7 @@ package com.example.ericl.lighter;
 
 import android.content.Context;
 import android.graphics.Point;
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -22,7 +23,6 @@ import com.android.volley.toolbox.Volley;
 import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity {
-    private ArduinoCommunicator arduinoCommunicator;
 
     private ImageButton onAllButton;
     private ImageButton offAllButton;
@@ -39,14 +39,13 @@ public class MainActivity extends AppCompatActivity {
     private boolean hylla2ButtonOn = false;
     private boolean vitrinButtonOn = false;
     private RequestQueue requestQueue;
+    private TouchBlackHoleView black_hole;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-//        arduinoCommunicator = new ArduinoCommunicator(this.getApplicationContext());
-
 
         requestQueue = setupArduinoCommunicator();
         setupCat();
@@ -57,18 +56,23 @@ public class MainActivity extends AppCompatActivity {
         setupHylla1Bytton();
         setupHylla2Button();
         setupVitrinButtion();
+        // Fetch enabled buttons from arduino
+        //black_hole = (TouchBlackHoleView) findViewById(R.id.black_hole);
+        // Test disable touch
+        //black_hole.disable_touch(true);
     }
-    private RequestQueue setupArduinoCommunicator(){
 
+
+    private RequestQueue setupArduinoCommunicator(){
         //Instantiate a RequestQueue
         requestQueue = Volley.newRequestQueue(this);
         return requestQueue;
     }
+
+
     private void sendRequestArduino(String url, final CharSequence toastText){
         final TextView mTextView = (TextView)findViewById(R.id.debugTextView);
-
         //Request a string response form the provided URL.
-
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
@@ -80,25 +84,27 @@ public class MainActivity extends AppCompatActivity {
                         String response_LED = tmp.split("<br />")[0];  //Fetch information about LED
                         Log.d("ARDUINO_RESPONSE", response_LED);
                         mTextView.setText(response_LED);
-                        Context context = getApplicationContext();
+                        /*Context context = getApplicationContext();
                         int duration = Toast.LENGTH_SHORT;
                         toast = Toast.makeText(context, toastText, duration);
-                        toast.show();
+                        toast.show();*/
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 mTextView.setText("That didint work!");
                 Log.d("ARDUINO_RESPONSE","Error message: " + error.getMessage() + ", Cause: " + error.getCause());
-                Context context = getApplicationContext();
+                /*Context context = getApplicationContext();
                 int duration = Toast.LENGTH_LONG;
                 toast = Toast.makeText(context, "That didn't work", duration);
-                toast.show();
+                toast.show();*/
             }
         });
         // Add the request to the RequestQueue
         requestQueue.add(stringRequest);
     }
+
+
     private void setupCat(){
         //Cat handler
 
@@ -128,6 +134,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
+
     private void setupOnAllButton(){
         //Turn everything on
         onAllButton = (ImageButton) findViewById(R.id.onAllButton);
@@ -140,8 +148,8 @@ public class MainActivity extends AppCompatActivity {
                 sendRequestArduino(url, toastTextOnAll);
             }
         });
-
     }
+
     private void setupOffAllButton(){
         //Turn everything off
         offAllButton = (ImageButton)findViewById(R.id.offAllButton);
@@ -156,6 +164,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
     private void setupTVButton(){
         //Turn tv on or off
         tvButton = (ImageButton)findViewById(R.id.tvButton);
@@ -185,6 +194,8 @@ public class MainActivity extends AppCompatActivity {
         });
 
     }
+
+
     private void setupHylla1Bytton(){
         //Turn hylla1 on or off
         hylla1Button = (ImageButton)findViewById(R.id.hylla1Button);
@@ -211,6 +222,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
+
     private void setupHylla2Button(){
         //Turn hylla2 on or off
         hylla2Button = (ImageButton)findViewById(R.id.hylla2Button);
@@ -238,6 +251,8 @@ public class MainActivity extends AppCompatActivity {
         });
 
     }
+
+
     private void setupVitrinButtion(){
         // Turn vitrin on or off
         vitrinButton = (ImageButton)findViewById(R.id.vitrinButton);

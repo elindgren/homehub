@@ -6,10 +6,14 @@
 //Include the correct libraries; SoftwareSerial and Wifi Library
 #include <SoftwareSerial.h>
 #include "WiFiEsp.h"
-
+// 433 MHz sender
+#include <RCSwitch.h>
 
 //Create WiFi module object on GPIO pin 6 (RX) and 7 (TX)
 SoftwareSerial Serial1(6, 7);
+
+//Create RC module
+RCSwitch mySwitch = RCSwitch();
 
 //Define network and password for Wifi; global arrays for wifi settings
 char ssid[] = ">tfw good internet";
@@ -33,6 +37,9 @@ void setup() {
 
   //Initialize ESP module
   WiFi.init(&Serial1);
+
+  //Initialize RC module - output on pin 10 (PWM)
+  mySwitch.enableTransmit(10);
 
   //Check for the presence of the shield
   if (WiFi.status() == WL_NO_SHIELD) {
@@ -78,10 +85,12 @@ String toggleLights(String command) {
     Serial.println("Turning On LED!");
     digitalWrite(LED_BUILTIN, HIGH); 
     response = "LED On";
+    mySwitch.send("000101010001010101010101"); //Rec. 1 on
   } else if (command == "GET /AL") {
     Serial.println("Turning Off LED!");
     digitalWrite(LED_BUILTIN, LOW);
     response = "LED Off";
+    mySwitch.send("000101010001010101010111"); //Rec. 1 off
   } else if (command == "GET /TH") {
     Serial.println("Turning on TV!");
     response = "TV On";
@@ -178,5 +187,4 @@ void loop() {
     Serial.println("Client disconnected");
   }
 }
-
 

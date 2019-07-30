@@ -21,7 +21,7 @@
             android:gravity="center">
 
             <RelativeLayout
-                android:layout_width="0dip"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_margin="0dp"
                 android:layout_weight="0" >
@@ -29,7 +29,7 @@
                 <ImageView
                     android:id="@+id/imageview_find_days_in_between"
                     android:layout_width="match_parent"
-                    android:layout_height="167dp"
+                    android:layout_height="192dp"
                     android:layout_centerInParent="true"
                     android:adjustViewBounds="false"
                     android:src="@drawable/fox1_tiny" />
@@ -169,6 +169,10 @@
                 app:srcCompat="@drawable/cat" />
         </TableRow>
     </TableLayout>
+    <com.example.ericl.lighter.TouchBlackHoleView
+        android:id="@+id/black_hole"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" />
 
     <TextView
         android:id="@+id/debugTextView"
@@ -184,4 +188,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0" />
+
+
 </android.support.constraint.ConstraintLayout>

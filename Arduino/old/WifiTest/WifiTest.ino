@@ -6,7 +6,8 @@
 //Include the correct libraries; SoftwareSerial and Wifi Library
 #include <SoftwareSerial.h>
 #include "WiFiEsp.h"
-
+// 433 MHz sender
+#include <RCSwitch.h>
 
 //Create WiFi module object on GPIO pin 6 (RX) and 7 (TX)
 SoftwareSerial Serial1(6, 7);
@@ -33,6 +34,9 @@ void setup() {
 
   //Initialize ESP module
   WiFi.init(&Serial1);
+
+  //Initialize RC module - output on pin 10 (PWM)
+  mySwitch.enableTransmit(10);
 
   //Check for the presence of the shield
   if (WiFi.status() == WL_NO_SHIELD) {
@@ -80,7 +84,6 @@ void loop() {
 //  Serial.println(test.indexOf("GET"));
   //Using code from: https://www.youtube.com/watch?v=ZH7ufemP8e0
   WiFiEspClient client = server.available(); //Listen for incoming clients
-
   if (client) { //If a client is found
     Serial.println("New Client");
     String currentLine = ""; //Make a string to hold incoming data from the device
@@ -105,27 +108,38 @@ void loop() {
           if (currentLine.length() == 0) {
             //HTTP headers always start with a response code (e.g. HTTP/1.1 200 OK)
             //and a content-type so the client knows what's coming, then a blank line:
+            Serial.println("SENDING RESPONSE");
             client.println("HTTP/1.1 200 OK");
-            client.println("Content-type:text/html");
+            client.println("Content-Type: text/html");
+            client.println("Connection: close");  // the connection will be closed after completion of the response
+            client.println("Refresh: 5");  // refresh the page automatically every 5 sec
             client.println();
+            client.println("<!DOCTYPE HTML>");
+            client.println("<html>");
             //Check to see if the client request was "Get /H" or "GET /L":
             if (command == "GET /H") {
               Serial.println(" Turning On LED!");
               digitalWrite(LED_BUILTIN, HIGH); //Get /H turns the LED on
-              }
+              client.print("LED turned On!");
+              client.println("<br />");
+            }
             if (command == "GET /L") {
               Serial.println("Turning off LED!");
               digitalWrite(LED_BUILTIN, LOW); //Get /L turns the LED off //Change lControl to something else - in the example it is the pin that the led is connected to
-           }
-           //The HTTP response ends with a other blank line:
-            client.println();
+            }
+            if (command == ""){
+              Serial.println("No command received!");
+            }
+            client.println("</html>");
+            //The HTTP response ends with another blank line:
+            //client.println();
             //break out of the while loop:
+            Serial.println("Exiting while loop!");
             break;
           }
           else { //If you got a newline, then clear currentline:
             Serial.println("Reseting currentLine");
             currentLine = "";
-            Serial.println("Command: " + command);
           }
         }
         else if (c != '\r') { //If you got anything but a carriage return character
