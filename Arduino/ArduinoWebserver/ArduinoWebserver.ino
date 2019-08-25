@@ -12,6 +12,7 @@
 //Create WiFi module object on GPIO pin 6 (RX) and 7 (TX)
 SoftwareSerial Serial1(6, 7);
 
+
 //Create RC module
 RCSwitch mySwitch = RCSwitch();
 
@@ -28,7 +29,10 @@ WiFiEspServer server(80);
 // the setup function runs once when you press reset or power the board
 void setup() {
   // DEBUG initialize digital pin LED_BUILTIN as an output.
-  pinMode(LED_BUILTIN, OUTPUT);
+  // pinMode(LED_BUILTIN, OUTPUT);
+  pinMode(13, OUTPUT);
+  // Turn on LED to indicate setup
+  digitalWrite(13, HIGH);
   //Initialize serial for debugging
   Serial.begin(115200);
 
@@ -38,14 +42,15 @@ void setup() {
   //Initialize ESP module
   WiFi.init(&Serial1);
 
-  //Initialize RC module - output on pin 10 (PWM)
-  mySwitch.enableTransmit(10);
+  //Initialize RC module - output on pin AO (PWM)
+  mySwitch.enableTransmit(A0);
 
   //Check for the presence of the shield
   if (WiFi.status() == WL_NO_SHIELD) {
     Serial.println("Wifi status: ");
     Serial.println(WiFi.status());
     Serial.println("WiFi shield not present!");
+    digitalWrite(13, HIGH);
     //Don't continue
     while (true);
   }
@@ -64,6 +69,8 @@ void setup() {
 
   //Start webservver
   server.begin();
+  // Turn off LED to indicate setup complete
+  digitalWrite(13, LOW);
 }
 
 void printWifiStatus() {
@@ -83,12 +90,10 @@ String toggleLights(String command) {
   String response = "";
   if (command == "GET /AH") {
     Serial.println("Turning On LED!");
-    digitalWrite(LED_BUILTIN, HIGH);  // DEBUG 
     response = "LED On";
     mySwitch.send("000101010001010101010101"); //Rec. 1 on
   } else if (command == "GET /AL") {
     Serial.println("Turning Off LED!");
-    digitalWrite(LED_BUILTIN, LOW);  // DEBUG
     response = "LED Off";
     mySwitch.send("000101010001010101010100"); //Rec. 1 off
   } else if (command == "GET /TH") {
@@ -111,10 +116,12 @@ String toggleLights(String command) {
     // Turns on shelf 2
     Serial.println("Turning on shelf 2!");
     response = "Shelf 2 on";
+    mySwitch.send("000101010100010101010101"); //Rec. 2 on
   } else if (command == "GET /2L") {
     // Turns off shelf 2 
     Serial.println("Turning off shelf 2!");
     response = "Shelf 2 off";
+    mySwitch.send("000101010100010101010100"); //Rec. 2 off
   } else if (command == "GET /VH") {
     // Turns on vitrin
     Serial.println("Turning on vitrin!");

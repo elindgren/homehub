@@ -3,7 +3,7 @@
 RCSwitch mySwitch = RCSwitch();
 void setup() {
   Serial.begin(9600);
-  mySwitch.enableReceive(0);
+  mySwitch.enableReceive(A0);
 }
 
 void loop() {
